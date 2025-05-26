@@ -5,6 +5,9 @@ import ReactPaginate from 'react-paginate';
 import { deleteUser } from '../../services/userService';
 import { toast } from 'react-toastify';
 import ModalComponent from '../modals/ModalComponent';
+import ModalAddNewUser from '../modals/ModalAddNewUser';
+// import {getGroupAxios} from '../../services/groupService'
+
 const UsersComponent = () => {
     
     const [listUser, setListUser] = useState([]);
@@ -14,9 +17,12 @@ const UsersComponent = () => {
     const [dataUser, setDataUser] = useState()
 
     const [isModal, setIsModal] = useState(false)
+    const [isModalAddNewUser, setIsModalAddNewUser] = useState(false)
     
     useEffect(() => {
+        setCurentLimit(2)
         fetchUsers()
+
     }, [currentPage])
 
     const fetchUsers = async()=> {
@@ -36,16 +42,17 @@ const UsersComponent = () => {
         window.location.reload()
     }
 
-      // Invoke when user click to request another page.
+    // pagination
+    // Invoke when user click to request another page.
     const handlePageClick = (event) => {
         setCurrentPage(event.selected + 1)
     };
 
+    // function modal delete user 
     const handleDeleteUser = async (data) => {
         setIsModal(!isModal)
         setDataUser(data)
     }
-
     const handleClose = ()=> {
         setIsModal(false)
         setDataUser({})
@@ -68,6 +75,36 @@ const UsersComponent = () => {
 
     }
 
+    // function modal add new user
+    const handleAddNewUser = () => {
+        setIsModalAddNewUser(true)
+    }
+    const handleCloseModalAddNewUser = () => {
+        setIsModalAddNewUser(false)
+    }
+    const handleConfirmAddNewUser = () => {
+
+
+
+        setIsModalAddNewUser(false)
+    }
+
+
+        // const [getGroup, setGetGroup] = useState({})
+    
+        // const handleGetGroup = async() => {
+        //     const response = await getGroupAxios();
+        //     console.log(response)
+        //     if (response && response.length > 0) {
+        //         setGetGroup(response)
+        //         console.log('group >>> ', getGroup)
+        //     } else {
+        //         console.log('fail group')
+        //     }
+        // }
+    
+        // useEffect(() => {
+        // }, [])
     return(
         <>
             <div className="container">
@@ -78,7 +115,7 @@ const UsersComponent = () => {
                         </div>
                         <div className="actions">
                             <button className='btn btn-success' onClick={handleRefesh}>Refesh</button>
-                            <button className='btn btn-primary'>Add New User</button>
+                            <button className='btn btn-primary' onClick={handleAddNewUser}>Add New User</button>
                         </div>
                         <div className="user-body">
                             <table className="table table-striped table-hover table-bordered">
@@ -152,10 +189,24 @@ const UsersComponent = () => {
                     }
                 </div>
             </div>
-            
-            {
-                 <ModalComponent show={isModal} handleClose={handleClose} titleModal={titleModal} contentModal={contentModal} handleConfirm={handleConfirm}/>
-            }
+            {/* modal delete user */}
+            <ModalComponent     
+                show={isModal} 
+                handleClose={handleClose} 
+                titleModal={titleModal} 
+                contentModal={contentModal} 
+                handleConfirm={handleConfirm}
+            />
+
+            {/* modal add new user */}
+            <ModalAddNewUser 
+                show={isModalAddNewUser} 
+                title={'Create new a user'}
+                handleClose={handleCloseModalAddNewUser} 
+                handleConfirm={handleConfirmAddNewUser}
+            />
+
+
         </>
     )
 }

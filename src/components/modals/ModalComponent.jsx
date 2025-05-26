@@ -1,23 +1,16 @@
-import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 const ModalComponent = (props) => {
-    const [show, setShow] = useState(true);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
     return (
         <>
-            {/* <Button variant="primary" onClick={handleShow}>
-                Launch static backdrop modal
-            </Button> */}
 
             <Modal
                 show={props.show}
                 onHide={props.handleClose}
                 backdrop="static"
                 keyboard={false}
+                centered
             >
                 <Modal.Header closeButton>
                 <Modal.Title>
