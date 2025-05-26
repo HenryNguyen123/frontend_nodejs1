@@ -21,4 +21,10 @@ const deleteUser = async (item) => {
                             {data: {id: item.id}})
 }
 
-export {registerUser, loginUser, fetchAllUsers, deleteUser}
+const createAddNewUser = async (userName, password, email, phone, name, address, gender, group) => {
+    return await axios.post(import.meta.env.VITE_LOCALHOST_API + '/user/create', {
+        userName, password, email, phone, name, address, gender, group
+    })
+}
+
+export {registerUser, loginUser, fetchAllUsers, deleteUser, createAddNewUser}

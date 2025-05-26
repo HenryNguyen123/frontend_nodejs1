@@ -23,7 +23,7 @@ const UsersComponent = () => {
         setCurentLimit(2)
         fetchUsers()
 
-    }, [currentPage])
+    }, [currentPage, isModalAddNewUser])
 
     const fetchUsers = async()=> {
         const response = await fetchAllUsers(currentPage, currentLimit)
