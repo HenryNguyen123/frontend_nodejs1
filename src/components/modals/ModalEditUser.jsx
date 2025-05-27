@@ -4,12 +4,11 @@ import "./modal.scss"
 import { useEffect, useState } from 'react';
 import {getGroupAxios} from '../../services/groupService'
 import { toast } from 'react-toastify';
-import {createAddNewUser,fetchEditUser} from '../../services/userService'
+import {createAddNewUser} from '../../services/userService'
 
-const ModalAddNewUser = (props) => {
+const ModalEditUser = (props) => {
 
-    const [userId, setUserId] = useState('')
-    const [userName, setUserName] = useState("")
+    const [userName, setUserName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [phone, setPhone] = useState('')
@@ -44,30 +43,7 @@ const ModalAddNewUser = (props) => {
 
     useEffect(() => {
         handleGetGroup()
-
-        //check edit
-        if (props.action === 'EDIT' && props.data) {
-            setUserId(props.data.id)
-            setUserName(props.data.userName || '');
-            setEmail(props.data.email || '');
-            setPhone(props.data.phone || '');
-            setName(props.data.name || '');
-            setPassword('')
-            setAddress(props.data.address || '');
-            setGroup(props.data.groupId || '');
-            setGender(props.data.gender || 'male');
-        }
-        //check create
-        if (props.action === 'CREATE') {
-            setUserName('');
-            setEmail('');
-            setPhone('');
-            setName('');
-            setAddress('');
-            setGroup('');
-            setGender('male');
-        }
-    }, [props.action, props.data])
+    }, [])
 
     // check valid
     const handleCheckValid = () => {
@@ -89,12 +65,12 @@ const ModalAddNewUser = (props) => {
             setObjCheckValid({...checkIsValid, isUserName: false})
             return
         }
-        if (!password && props.action == 'CREATE') {
+        if (!password) {
             toast.error('Please enter your password')
             setObjCheckValid({...checkIsValid, isPassword: false})
             return
         }
-        if (password && password.length < 6  && props.action == 'CREATE') {
+        if (password && password.length < 6) {
             toast.error('Password must be at least 6 characters long')
             setObjCheckValid({...checkIsValid, isPassword: false})
             return
@@ -127,40 +103,27 @@ const ModalAddNewUser = (props) => {
         return true
     }
 
-    const handleCreateUser = async () => {
-        const check = handleCheckValid()
-        if (check) {
-            const resUser = await createAddNewUser(userName, password, email, phone, name, address, gender, group);
-            if (resUser && resUser.data.EC === 0) {
-                toast.success(resUser.data.EM)
-                setUserName('')
-                setEmail('')
-                setPassword('')
-                setPhone('')
-                setName('')
-                setGroup('')
-                setAddress('')
-                props.handleClose()
-            } else {
-                toast.error(resUser.data.EM)
-            }
-        }
-    }
+    // const handleCreateUser = async () => {
+    //     const check = handleCheckValid()
+    //     if (check) {
+    //         const resUser = await createAddNewUser(userName, password, email, phone, name, address, gender, group);
+    //         if (resUser && resUser.data.EC === 0) {
+    //             toast.success(resUser.data.EM)
+    //             setUserName('')
+    //             setEmail('')
+    //             setPassword('')
+    //             setPhone('')
+    //             setName('')
+    //             setGroup('')
+    //             setAddress('')
+    //             props.handleClose()
+    //         } else {
+    //             toast.error(resUser.data.EM)
+    //         }
+    //     }
+    // }
 
-    const handleEditUser = async ()=> {
-        const check = handleCheckValid()
 
-        if (check) {
-            const resEdit = await fetchEditUser(userId, name, address, gender, group);
-            if (resEdit.data && resEdit.data.EC === 0) {
-                toast.success(resEdit.data.EM)
-                props.handleClose()
-            } else {
-                toast.error(resEdit.data.EM)
-            }
-        }
-
-    }
     return(
         <>
             <Modal
@@ -174,33 +137,29 @@ const ModalAddNewUser = (props) => {
             >
                 <Modal.Header closeButton>
                 <Modal.Title>
-                    <h3>{props.action == 'CREATE' ? "Create add new user" : "Edit a user"}</h3>
+                    <h3>{props.title}</h3>
                 </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="content-body row">
                         <div className="col-12 col-sm-6 form-group">
-                            <label htmlFor="">Email <span className="red">*</span> </label>
-                            <input type="email" name='email' readOnly={props.action === 'EDIT'} value={email} onChange={e => setEmail(e.target.value)} className={objCheckValid.isEmail ? 'form-control' : 'form-control is-invalid'}/>
+                            <label htmlFor="">Email <spans className="red">*</spans> </label>
+                            <input type="email" name='email' value={email} onChange={e => setEmail(e.target.value)} className={objCheckValid.isEmail ? 'form-control' : 'form-control is-invalid'}/>
                         </div>
                         <div className="col-12 col-sm-6 form-group">
-                            <label htmlFor="">UserName <span className="red">*</span> </label>
-                            <input type="text" value={userName} readOnly={props.action === 'EDIT'} onChange={e => setUserName(e.target.value)} className={objCheckValid.isUserName ? 'form-control' : 'form-control is-invalid'}/>
-                        </div>
-                        {
-                            props.action === 'CREATE' && (
-                                <div className="col-12 col-sm-6 form-group">
-                                    <label htmlFor="">Password <span className="red">*</span> </label>
-                                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} className={objCheckValid.isPassword ? 'form-control' : 'form-control is-invalid'}/>
-                                </div>
-                            )
-                        }
-                        <div className="col-12 col-sm-6 form-group">
-                            <label htmlFor="">Phone <span className="red">*</span> </label>
-                            <input type="text" value={phone} readOnly={props.action === 'EDIT'} onChange={e => setPhone(e.target.value)} className={objCheckValid.isPhone ? 'form-control' : 'form-control is-invalid'}/>
+                            <label htmlFor="">UserName <spans className="red">*</spans> </label>
+                            <input type="text" value={userName} onChange={e => setUserName(e.target.value)} className={objCheckValid.isUserName ? 'form-control' : 'form-control is-invalid'}/>
                         </div>
                         <div className="col-12 col-sm-6 form-group">
-                            <label htmlFor="">Name <span className="red">*</span> </label>
+                            <label htmlFor="">Password <spans className="red">*</spans> </label>
+                            <input type="password" value={password} onChange={e => setPassword(e.target.value)} className={objCheckValid.isPassword ? 'form-control' : 'form-control is-invalid'}/>
+                        </div>
+                        <div className="col-12 col-sm-6 form-group">
+                            <label htmlFor="">Phone <spans className="red">*</spans> </label>
+                            <input type="text" value={phone} onChange={e => setPhone(e.target.value)} className={objCheckValid.isPhone ? 'form-control' : 'form-control is-invalid'}/>
+                        </div>
+                        <div className="col-12 col-sm-6 form-group">
+                            <label htmlFor="">Name <spans className="red">*</spans> </label>
                             <input type="text" value={name} onChange={e => setName(e.target.value)} className={objCheckValid.isName ? 'form-control' : 'form-control is-invalid'}/>
                         </div>
                         <div className="col-12 col-sm-6 form-group">
@@ -208,7 +167,7 @@ const ModalAddNewUser = (props) => {
                             <input type="text" value={address} onChange={e => setAddress(e.target.value)} className='form-control'/>
                         </div>
                         <div className="col-12 col-sm-6 form-group">
-                            <label htmlFor="">Group (<span className="red">*</span>) </label>
+                            <label htmlFor="">Group (<spans className="red">*</spans>) </label>
                             <select 
                                 name='groupId' aria-label="Default select example"
                                 value={group} onChange={e => setGroup(e.target.value)} 
@@ -242,7 +201,7 @@ const ModalAddNewUser = (props) => {
                 <Button variant="secondary" onClick={props.handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={props.action === 'CREATE' ?handleCreateUser : handleEditUser}>Save</Button>
+                <Button variant="primary" onClick={handleCreateUser}>Save</Button>
                 </Modal.Footer>
             </Modal>
         
@@ -250,4 +209,4 @@ const ModalAddNewUser = (props) => {
     )
 }
 
-export default ModalAddNewUser
+export default ModalEditUser

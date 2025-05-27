@@ -27,4 +27,13 @@ const createAddNewUser = async (userName, password, email, phone, name, address,
     })
 }
 
-export {registerUser, loginUser, fetchAllUsers, deleteUser, createAddNewUser}
+const handlefetchOneUser = async (id) => {
+        return await axios.post(import.meta.env.VITE_LOCALHOST_API + '/user/get-user', {id})
+}
+
+const fetchEditUser = async (userId, name, address, gender, group)=> {
+    return await axios.put(import.meta.env.VITE_LOCALHOST_API + '/user/update', {
+        userId, name, address, gender, group
+    })
+}
+export {registerUser, loginUser, fetchAllUsers, deleteUser, createAddNewUser, handlefetchOneUser, fetchEditUser}

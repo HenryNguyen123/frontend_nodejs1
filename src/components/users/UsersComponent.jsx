@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './users.scss'
-import {fetchAllUsers} from '../../services/userService'
+import {fetchAllUsers, handlefetchOneUser} from '../../services/userService'
 import ReactPaginate from 'react-paginate';
 import { deleteUser } from '../../services/userService';
 import { toast } from 'react-toastify';
@@ -16,23 +16,32 @@ const UsersComponent = () => {
     const [totlaPage, setTotalPage] = useState(0);
     const [dataUser, setDataUser] = useState()
 
+    //modal add new user
     const [isModal, setIsModal] = useState(false)
     const [isModalAddNewUser, setIsModalAddNewUser] = useState(false)
     
+    const [actionModalUser, setActionModalUser] = useState('')
+
+    // modal edit user
+    const [dataUserEdit, setDataUserEdit] = useState({})
+
     useEffect(() => {
         setCurentLimit(2)
         fetchUsers()
-
     }, [currentPage, isModalAddNewUser])
 
     const fetchUsers = async()=> {
         const response = await fetchAllUsers(currentPage, currentLimit)
 
         if (response && response.data && response.data.EC ===0) {
+            // check count user into page (pagination)
+            if (response.data.DT.users.length == 0 && currentPage > 1) {
+                setCurrentPage(prev => prev - 1)
+                return
+            }
             setListUser(response.data.DT.users)
-            // console.log(response.data.DT)
-
             setTotalPage(response.data.DT.totalPages)
+
         } else {
             console.log('get data user faill')
         }
@@ -77,34 +86,29 @@ const UsersComponent = () => {
 
     // function modal add new user
     const handleAddNewUser = () => {
+        setActionModalUser('CREATE')
         setIsModalAddNewUser(true)
     }
     const handleCloseModalAddNewUser = () => {
         setIsModalAddNewUser(false)
     }
     const handleConfirmAddNewUser = () => {
-
-
-
         setIsModalAddNewUser(false)
+        setDataUserEdit({})
     }
 
 
-        // const [getGroup, setGetGroup] = useState({})
-    
-        // const handleGetGroup = async() => {
-        //     const response = await getGroupAxios();
-        //     console.log(response)
-        //     if (response && response.length > 0) {
-        //         setGetGroup(response)
-        //         console.log('group >>> ', getGroup)
-        //     } else {
-        //         console.log('fail group')
-        //     }
-        // }
-    
-        // useEffect(() => {
-        // }, [])
+    //function edit a user
+    const handleEditUser = async (id) => {
+        const resGetUser = await handlefetchOneUser(id)
+        if (resGetUser.data.EC === 0) {
+            let user = resGetUser.data.DT
+            setDataUserEdit(user)
+        }
+        setActionModalUser('EDIT')
+        setIsModalAddNewUser(true)
+    }
+
     return(
         <>
             <div className="container">
@@ -125,6 +129,7 @@ const UsersComponent = () => {
                                     <th scope="col">ID</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">UserName</th>
+                                    <th scope="col">Name</th>
                                     <th scope="col">Group</th>
                                     <th scope="col">Action</th>
                                     </tr>
@@ -133,13 +138,14 @@ const UsersComponent = () => {
                                     {listUser && listUser.length > 0 ? (
                                         listUser.map((item, index) => (
                                             <tr key={item.id || index}>
-                                                <th scope="row">{index + 1}</th>
+                                                <th scope="row">{(currentPage-1) * currentLimit + index + 1}</th>
                                                 <td>{item.id}</td>
                                                 <td>{item.email}</td>
                                                 <td>{item.userName}</td>
+                                                <td>{item.name}</td>
                                                 <td>{item.Group?.name || 'N/A'}</td>
                                                 <td>
-                                                    <button type="button" className='btn btn-warning mx-3'>
+                                                    <button type="button" className='btn btn-warning mx-3' onClick={()=>handleEditUser(item.id)}>
                                                         Edit
                                                     </button>
                                                     <button type="button" className="btn btn-danger" onClick={() => handleDeleteUser(item)}>
@@ -201,9 +207,10 @@ const UsersComponent = () => {
             {/* modal add new user */}
             <ModalAddNewUser 
                 show={isModalAddNewUser} 
-                title={'Create new a user'}
                 handleClose={handleCloseModalAddNewUser} 
                 handleConfirm={handleConfirmAddNewUser}
+                action={actionModalUser}
+                data={dataUserEdit}
             />
 
 
