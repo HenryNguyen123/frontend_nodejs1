@@ -40,9 +40,9 @@ const LoginComponent = () => {
     const handleLogin = async() => {
         isValidLogin()
         let res = await loginUser(userName, password)
-        let serverData =  res.data
+        let serverData =  res
         //success
-        if (res && serverData && +res.data.EC === 0){
+        if (res && serverData && +res.EC === 0){
             // Save data to sessionStorage
             let dataUser = {
                 isAuthenticated: true,
@@ -56,7 +56,7 @@ const LoginComponent = () => {
             return
         }
         //fail
-        if (res && serverData && +res.data.EC !== 0) {
+        if (res && serverData && +res.EC !== 0) {
             toast.error(serverData.EM)
             return
         }

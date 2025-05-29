@@ -85,12 +85,11 @@ const RegisterComponent = () => {
 
         if (check) {
             let res = await registerUser(email, name, userName, password, phone)
-            let serverData =  res.data
-            if (+serverData.EC == 0) {
-                toast.success(serverData.EM)
+            if (+res.EC == 0) {
+                toast.success(res.EM)
                 return navigate('/login')
             } else {
-                toast.error(serverData.EM)
+                toast.error(res.EM)
             }
         }
     }

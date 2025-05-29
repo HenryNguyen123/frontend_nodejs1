@@ -34,9 +34,8 @@ const ModalAddNewUser = (props) => {
 
     const handleGetGroup = async() => {
         const response = await getGroupAxios();
-        console.log(response)
-        if (response && response.data && response.data.EC === 0) {
-            setGetGroup(response.data.DT)
+        if (response && response.EC === 0) {
+            setGetGroup(response.DT)
         } else {
             console.log('group fail')
         }
@@ -131,8 +130,8 @@ const ModalAddNewUser = (props) => {
         const check = handleCheckValid()
         if (check) {
             const resUser = await createAddNewUser(userName, password, email, phone, name, address, gender, group);
-            if (resUser && resUser.data.EC === 0) {
-                toast.success(resUser.data.EM)
+            if (resUser && resUser.EC === 0) {
+                toast.success(resUser.EM)
                 setUserName('')
                 setEmail('')
                 setPassword('')
@@ -142,7 +141,7 @@ const ModalAddNewUser = (props) => {
                 setAddress('')
                 props.handleClose()
             } else {
-                toast.error(resUser.data.EM)
+                toast.error(resUser.EM)
             }
         }
     }
@@ -152,11 +151,11 @@ const ModalAddNewUser = (props) => {
 
         if (check) {
             const resEdit = await fetchEditUser(userId, name, address, gender, group);
-            if (resEdit.data && resEdit.data.EC === 0) {
-                toast.success(resEdit.data.EM)
+            if (resEdit && resEdit.EC === 0) {
+                toast.success(resEdit.EM)
                 props.handleClose()
             } else {
-                toast.error(resEdit.data.EM)
+                toast.error(resEdit.EM)
             }
         }
 
@@ -242,7 +241,9 @@ const ModalAddNewUser = (props) => {
                 <Button variant="secondary" onClick={props.handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={props.action === 'CREATE' ?handleCreateUser : handleEditUser}>Save</Button>
+                <Button variant="primary" onClick={props.action === 'CREATE' ?handleCreateUser : handleEditUser}>
+                    {props.action === 'CREATE' ? 'Save' : 'Update'}
+                </Button>
                 </Modal.Footer>
             </Modal>
         

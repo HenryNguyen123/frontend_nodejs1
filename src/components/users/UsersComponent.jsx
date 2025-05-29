@@ -6,6 +6,8 @@ import { deleteUser } from '../../services/userService';
 import { toast } from 'react-toastify';
 import ModalComponent from '../modals/ModalComponent';
 import ModalAddNewUser from '../modals/ModalAddNewUser';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowsRotate, faCirclePlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
 // import {getGroupAxios} from '../../services/groupService'
 
 const UsersComponent = () => {
@@ -33,14 +35,14 @@ const UsersComponent = () => {
     const fetchUsers = async()=> {
         const response = await fetchAllUsers(currentPage, currentLimit)
 
-        if (response && response.data && response.data.EC ===0) {
+        if (response && response.EC ===0) {
             // check count user into page (pagination)
-            if (response.data.DT.users.length == 0 && currentPage > 1) {
+            if (response.DT.users.length == 0 && currentPage > 1) {
                 setCurrentPage(prev => prev - 1)
                 return
             }
-            setListUser(response.data.DT.users)
-            setTotalPage(response.data.DT.totalPages)
+            setListUser(response.DT.users)
+            setTotalPage(response.DT.totalPages)
 
         } else {
             console.log('get data user faill')
@@ -71,13 +73,13 @@ const UsersComponent = () => {
     const handleConfirm = async() => {
         if (dataUser) {
             const response = await deleteUser(dataUser)
-            if (response && response.data.EC === 0 ) {
-                toast.success(response.data.EM)
+            if (response && response.EC === 0 ) {
+                toast.success(response.EM)
                 fetchUsers()
                 setIsModal(false)
                 return
             } else {
-                toast.error(response.data.EM)
+                toast.error(response.EM)
             }
         }
         toast.error('Delete user unsuccessfuly')
@@ -101,8 +103,8 @@ const UsersComponent = () => {
     //function edit a user
     const handleEditUser = async (id) => {
         const resGetUser = await handlefetchOneUser(id)
-        if (resGetUser.data.EC === 0) {
-            let user = resGetUser.data.DT
+        if (resGetUser.EC === 0) {
+            let user = resGetUser.DT
             setDataUserEdit(user)
         }
         setActionModalUser('EDIT')
@@ -115,11 +117,11 @@ const UsersComponent = () => {
                 <div className="mamage-user-container">
                     <div className="user-header">
                         <div className="title">
-                            <h1>Table Users</h1>
+                            <h1>Manger Users</h1>
                         </div>
                         <div className="actions">
-                            <button className='btn btn-success' onClick={handleRefesh}>Refesh</button>
-                            <button className='btn btn-primary' onClick={handleAddNewUser}>Add New User</button>
+                            <button className='btn btn-success refresh' onClick={handleRefesh}>Refresh<FontAwesomeIcon icon={faArrowsRotate} /> </button>
+                            <button className='btn btn-primary add-new-user' onClick={handleAddNewUser}>Add New User<FontAwesomeIcon icon={faCirclePlus} /></button>
                         </div>
                         <div className="user-body">
                             <table className="table table-striped table-hover table-bordered">
@@ -146,10 +148,10 @@ const UsersComponent = () => {
                                                 <td>{item.Group?.name || 'N/A'}</td>
                                                 <td>
                                                     <button type="button" className='btn btn-warning mx-3' onClick={()=>handleEditUser(item.id)}>
-                                                        Edit
+                                                        Edit<FontAwesomeIcon icon={faPen} />
                                                     </button>
                                                     <button type="button" className="btn btn-danger" onClick={() => handleDeleteUser(item)}>
-                                                        Delete
+                                                        Delete<FontAwesomeIcon icon={faTrash} />
                                                     </button>
                                                 </td>
                                             </tr>

@@ -1,38 +1,39 @@
-import axios from 'axios'
+// import axios from 'axios'
+import axios from '../setup/axios'
 
 const registerUser = (email, name, userName, password, phone) => {
-    return axios.post(import.meta.env.VITE_LOCALHOST_API +"/register", {
+    return axios.post("/register", {
         email, name, userName, password, phone
     })
 }
 
 const loginUser = async(userName, password) => {
-    return await axios.post(import.meta.env.VITE_LOCALHOST_API + '/login', {
+    return await axios.post( '/login', {
         userName, password
     })
 }
 
 const fetchAllUsers = async(page, limit) => {
-    return await axios.get(import.meta.env.VITE_LOCALHOST_API + `/user/show?page=${page}&limit=${limit}`)
+    return await axios.get( `/user/show?page=${page}&limit=${limit}`)
 }
 
 const deleteUser = async (item) => {
-    return await axios.delete(import.meta.env.VITE_LOCALHOST_API + `/user/delete`,
+    return await axios.delete( `/user/delete`,
                             {data: {id: item.id}})
 }
 
 const createAddNewUser = async (userName, password, email, phone, name, address, gender, group) => {
-    return await axios.post(import.meta.env.VITE_LOCALHOST_API + '/user/create', {
+    return await axios.post( '/user/create', {
         userName, password, email, phone, name, address, gender, group
     })
 }
 
 const handlefetchOneUser = async (id) => {
-        return await axios.post(import.meta.env.VITE_LOCALHOST_API + '/user/get-user', {id})
+        return await axios.post( '/user/get-user', {id})
 }
 
 const fetchEditUser = async (userId, name, address, gender, group)=> {
-    return await axios.put(import.meta.env.VITE_LOCALHOST_API + '/user/update', {
+    return await axios.put( '/user/update', {
         userId, name, address, gender, group
     })
 }
