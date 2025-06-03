@@ -24,7 +24,7 @@ const ModalComponent = (props) => {
                 <Button variant="secondary" onClick={props.handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={props.handleConfirm}>Confirm</Button>
+                <Button variant="warning" onClick={props.handleConfirm}>Confirm</Button>
                 </Modal.Footer>
             </Modal>
 

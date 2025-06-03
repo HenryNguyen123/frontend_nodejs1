@@ -30,6 +30,8 @@ const UsersComponent = () => {
     useEffect(() => {
         setCurentLimit(2)
         fetchUsers()
+
+
     }, [currentPage, isModalAddNewUser])
 
     const fetchUsers = async()=> {
@@ -74,7 +76,7 @@ const UsersComponent = () => {
         if (dataUser) {
             const response = await deleteUser(dataUser)
             if (response && response.EC === 0 ) {
-                toast.success(response.EM)
+                toast.warning(response.EM)
                 fetchUsers()
                 setIsModal(false)
                 return

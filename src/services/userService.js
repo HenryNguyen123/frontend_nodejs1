@@ -10,11 +10,11 @@ const registerUser = (email, name, userName, password, phone) => {
 const loginUser = async(userName, password) => {
     return await axios.post( '/login', {
         userName, password
-    })
+    }, {withCredentials: true})
 }
 
 const fetchAllUsers = async(page, limit) => {
-    return await axios.get( `/user/show?page=${page}&limit=${limit}`)
+    return await axios.get( `/user/show?page=${page}&limit=${limit}`, {withCredentials: true})
 }
 
 const deleteUser = async (item) => {
