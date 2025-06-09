@@ -37,4 +37,8 @@ const fetchEditUser = async (userId, name, address, gender, group)=> {
         userId, name, address, gender, group
     })
 }
-export {registerUser, loginUser, fetchAllUsers, deleteUser, createAddNewUser, handlefetchOneUser, fetchEditUser}
+
+const getUserAccount = async() => {
+    return axios.get('/account')
+}
+export {registerUser, loginUser, fetchAllUsers, deleteUser, createAddNewUser, handlefetchOneUser, fetchEditUser, getUserAccount}

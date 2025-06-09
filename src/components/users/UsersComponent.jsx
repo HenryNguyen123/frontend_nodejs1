@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './users.scss'
 import {fetchAllUsers, handlefetchOneUser} from '../../services/userService'
 import ReactPaginate from 'react-paginate';
@@ -8,9 +8,11 @@ import ModalComponent from '../modals/ModalComponent';
 import ModalAddNewUser from '../modals/ModalAddNewUser';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowsRotate, faCirclePlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { UserContext } from '../context/UserContext';
 // import {getGroupAxios} from '../../services/groupService'
 
 const UsersComponent = () => {
+    const {user} = useContext(UserContext)
     
     const [listUser, setListUser] = useState([]);
     const [currentPage, setCurrentPage] = useState(1)
@@ -30,8 +32,7 @@ const UsersComponent = () => {
     useEffect(() => {
         setCurentLimit(2)
         fetchUsers()
-
-
+        console.log('user   ', user)
     }, [currentPage, isModalAddNewUser])
 
     const fetchUsers = async()=> {

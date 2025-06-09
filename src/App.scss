@@ -45,3 +45,14 @@
     margin: 0px;
     padding: 0px;
 }
+
+.loading-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    .loading-user {
+        margin: 0px auto;
+
+    }
+}

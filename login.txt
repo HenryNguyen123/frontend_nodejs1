@@ -51,16 +51,13 @@ const LoginComponent = () => {
             let groupWithRole = res.DT.data
             let email = res.DT.email
             let userName = res.DT.userName
-            let token = res.DT.acces_token
             let dataUser = {
-                isLoading: false,
                 isAuthenticated: true,
-                token: token,
+                token: res.DT.acces_token,
                 account: {groupWithRole, email, userName}
             }
 
             // update user login success
-            localStorage.setItem('JWT', token);
             loginContext(dataUser)
 
             toast.success(serverData.EM)
