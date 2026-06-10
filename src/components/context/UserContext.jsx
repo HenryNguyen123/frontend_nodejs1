@@ -1,12 +1,10 @@
 import { createContext, useState, useEffect } from "react"
-import {getUserAccount} from '../../services/userService'
-
+import {getUserAccount, getRemoveJWT} from '../../services/userService'
 export const UserContext = createContext();
 
 const UserProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [loadingAccount, setLoadingAccount] = useState(true)
-
     //handle login 
     const loginContext = (userData) => {
         setUser({
@@ -17,8 +15,9 @@ const UserProvider = ({children}) => {
         })
     }
     //handle out 
-    const logoutContext = () => {
-        sessionStorage.setItem('account', JSON.stringify(''))
+    const logoutContext = async() => {
+        localStorage.removeItem('JWT')
+        await getRemoveJWT()
         setUser({
                     isLoading: false,
                     isAuthenticated:false,
@@ -42,7 +41,6 @@ const UserProvider = ({children}) => {
                     token: data.DT.acces_token,
                     account: {groupWithRole, email, userName}
                 }
-                console.log('data >>' , data)
                 // update user login success
                 loginContext(dataUser)
             }
@@ -57,7 +55,8 @@ const UserProvider = ({children}) => {
         try {
             if ( pathRouter !== '/login' && pathRouter !== '/register'  ) {
                 fetchUserAccount()
-            } else {
+            } 
+            else {
                 setLoadingAccount(false)
             }
         } catch (error) {

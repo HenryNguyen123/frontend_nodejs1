@@ -71,7 +71,7 @@ const UsersComponent = () => {
         setIsModal(false)
         setDataUser({})
     }
-    const titleModal = 'Delete User'
+    const titleModal = 'Delete User' 
     const contentModal= `Do you want to delete ${dataUser ? dataUser.name : ''}?`
     const handleConfirm = async() => {
         if (dataUser) {

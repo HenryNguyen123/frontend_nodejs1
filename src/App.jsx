@@ -15,7 +15,7 @@ function App() {
     return (
       <>
         <div className='loading-container'>
-            <div className='loading-user'>
+            <div className='loading-user'>  
               <Audio
                 height="80"
                 width="80"
@@ -39,7 +39,7 @@ function App() {
               account && !_.isEmpty(account) && account.isAuthenticated    // check điều kiện theo lodash
               && <NavComponent/>
             } */}
-            <NavComponent/>
+            {/* <NavComponent/> */}
           </div>
           
           <div className="app-container">

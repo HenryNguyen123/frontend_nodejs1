@@ -1,15 +1,16 @@
 
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import './login.scss'
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
  import { ToastContainer, toast } from 'react-toastify';
 import {loginUser} from '../../services/userService'
 import { UserContext } from '../context/UserContext';
 
 const LoginComponent = () => {
     const navigate = useNavigate()
+    const location = useLocation()
 
-    const {loginContext} = useContext(UserContext)
+    const {user, loginContext} = useContext(UserContext)
 
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')
@@ -59,8 +60,11 @@ const LoginComponent = () => {
                 account: {groupWithRole, email, userName}
             }
 
-            // update user login success
+            // update user login success + set time remove local + set localStorage with JWT
+            const now = new Date();
+            const item = {expiry: now.getTime() + 3600};
             localStorage.setItem('JWT', token);
+            localStorage.setItem('setTimeToken', JSON.stringify(item));
             loginContext(dataUser)
 
             toast.success(serverData.EM)
@@ -85,6 +89,12 @@ const LoginComponent = () => {
         navigate('/register')
     }
 
+    const path = location.pathname
+    useEffect(() => {
+        if (user?.isAuthenticated ===  true && path == '/login') {
+            return navigate('/')
+        }
+    }, [path])
     return(
         <>
             <div className="login-container">

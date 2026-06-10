@@ -39,6 +39,10 @@ const fetchEditUser = async (userId, name, address, gender, group)=> {
 }
 
 const getUserAccount = async() => {
-    return axios.get('/account')
+    return await axios.get('/account')
 }
-export {registerUser, loginUser, fetchAllUsers, deleteUser, createAddNewUser, handlefetchOneUser, fetchEditUser, getUserAccount}
+
+const getRemoveJWT = async() => {
+    return await axios.post('/remove-jwt')
+}
+export {registerUser, loginUser, fetchAllUsers, deleteUser, createAddNewUser, handlefetchOneUser, fetchEditUser, getUserAccount, getRemoveJWT}
