@@ -1,0 +1,20 @@
+.home{
+    height: 100vh;
+    background-color: rgb(251, 169, 224);
+    display: flex;
+    align-items: center;
+    .box1{
+        flex: 1;
+    }
+    .box2{
+        flex: 1;
+        .main-h1{
+            background-color: rgb(186, 136, 239);
+            text-align: center;
+            padding: 5px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: aliceblue;
+        }
+    }
+}
