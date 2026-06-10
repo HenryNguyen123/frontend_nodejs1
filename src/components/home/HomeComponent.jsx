@@ -7,7 +7,7 @@ const HomeComponent = () => {
             <div className='home'>
                 <div className='box1'></div>
                 <div className='box2'>
-                    <h1 className="main-h1">Mai cúp tập phạt 500k :))</h1>
+                    <h1 className="main-h1">MAI TẬP CHÂN NHÁ, KHÔNG ĐI NỘP 500K</h1>
                 </div>
                 <div className='box1'></div>
             </div>
